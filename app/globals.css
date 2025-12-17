@@ -3,12 +3,21 @@
 @tailwind utilities;
 
 body {
-  background-color: #05070c;
+  background:
+    radial-gradient(circle at top, #0b1120 0, #05070c 55%, #020617 100%);
+  color: #e7eef5;
+  font-size: 15px;
+}
+
+a {
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 ::selection {
   background: #00b4ff;
-  color: #05070c;
+  color: #020617;
 }
-
-/* Optional subtle hero noise/gradient tweaks can go here later */

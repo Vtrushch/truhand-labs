@@ -1,0 +1,22 @@
+<svg width="210" height="44" viewBox="0 0 210 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glow circle -->
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(22 22) rotate(90) scale(22)">
+      <stop stop-color="#14E3FF" stop-opacity="0.8"></stop>
+      <stop offset="1" stop-color="#14E3FF" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+  <circle cx="22" cy="22" r="22" fill="url(#glow)"></circle>
+  <!-- TL monogram -->
+  <circle cx="22" cy="22" r="15" fill="#05070C" stroke="#00B4FF" stroke-width="2"></circle>
+  <path d="M16 17H28" stroke="#00B4FF" stroke-width="2" stroke-linecap="round"></path>
+  <path d="M18 19V27" stroke="#00B4FF" stroke-width="2" stroke-linecap="round"></path>
+  <path d="M25 19V27H29" stroke="#00B4FF" stroke-width="2" stroke-linecap="round"></path>
+  <!-- Wordmark -->
+  <text x="52" y="22" fill="#E7EEF5" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif" font-size="14" letter-spacing="0.3em" dominant-baseline="middle">
+    TRUHAND LABS
+  </text>
+  <text x="52" y="32" fill="#97A6B3" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif" font-size="9">
+    QA &amp; AI AUTOMATION STUDIO
+  </text>
+</svg>
