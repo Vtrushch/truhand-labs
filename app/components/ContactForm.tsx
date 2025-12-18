@@ -10,16 +10,58 @@ export default function ContactForm() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("CONTACT FORM SUBMITTED:", form);
-    alert("Your message has been sent (placeholder).");
+    setSuccess(null);
+    setError(null);
+
+    if (!form.name || !form.email || !form.message) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: `${form.message}\n\nCompany / Project: ${form.company || "—"}`,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setError(data?.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSuccess("Thanks! Your message has been sent. We’ll get back to you shortly.");
+      setForm({
+        name: "",
+        email: "",
+        company: "",
+        message: "",
+      });
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,6 +90,7 @@ export default function ContactForm() {
                   className="w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-th-text outline-none focus:border-th-accent focus:ring-1 focus:ring-th-accent"
                   value={form.name}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -61,6 +104,7 @@ export default function ContactForm() {
                   className="w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-th-text outline-none focus:border-th-accent focus:ring-1 focus:ring-th-accent"
                   value={form.email}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -75,6 +119,7 @@ export default function ContactForm() {
                 className="w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-th-text outline-none focus:border-th-accent focus:ring-1 focus:ring-th-accent"
                 value={form.company}
                 onChange={handleChange}
+                disabled={loading}
               />
             </div>
 
@@ -89,15 +134,29 @@ export default function ContactForm() {
                 className="w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-th-text outline-none focus:border-th-accent focus:ring-1 focus:ring-th-accent resize-none"
                 value={form.message}
                 onChange={handleChange}
+                disabled={loading}
               />
             </div>
+
+            {error && (
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+                {success}
+              </div>
+            )}
 
             <div className="pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-th-accent px-6 py-3 text-sm font-semibold text-th-bg hover:bg-th-accent-secondary transition-colors"
+                disabled={loading}
+                className="inline-flex items-center justify-center rounded-full bg-th-accent px-6 py-3 text-sm font-semibold text-th-bg hover:bg-th-accent-secondary transition-colors disabled:opacity-60"
               >
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </div>
           </form>
